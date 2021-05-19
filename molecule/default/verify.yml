@@ -70,3 +70,21 @@
 
           Restart=no
           TimeoutSec=3600
+
+    - name: Should template systemd timer file
+      slurp:
+        src: /etc/systemd/system/minecraftoverviewer.timer
+      register: systemd_timer_file
+      failed_when:
+        not systemd_timer_file.content == ( expected_content | b64encode )
+      vars:
+        expected_content: |
+          [Unit]
+          Description=Run minecraftoverview service
+
+          [Timer]
+          OnCalendar = daily
+          Persistent=true
+
+          [Install]
+          WantedBy=timers.target

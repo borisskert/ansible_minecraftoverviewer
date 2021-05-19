@@ -26,3 +26,13 @@
     mode: 0644
   notify:
     - Restart minecraftoverviewer service
+
+- name: Create systemd timer file
+  template:
+    src: systemd.timer.j2
+    dest: "/etc/systemd/system/{{ minecraftoverviewer_service_name }}.timer"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart minecraftoverviewer service
