@@ -88,3 +88,14 @@
 
           [Install]
           WantedBy=timers.target
+
+    - name: Should create render volume
+      stat:
+        path: /srv/minecraft_overviewer/render
+      register: render_volume_directory
+      failed_when: not (
+        render_volume_directory.stat.exists
+        and render_volume_directory.stat.uid == 1000
+        and render_volume_directory.stat.gid == 1000
+        and render_volume_directory.stat.mode == '0755'
+        )

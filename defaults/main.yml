@@ -1,4 +1,6 @@
 ---
+minecraftoverviewer_render_volume: /srv/minecraft_overviewer/render
+
 minecraftoverviewer_service_name: minecraftoverviewer
 
 minecraftoverviewer_docker_working_directory: /opt/minecraft_overviewer/docker

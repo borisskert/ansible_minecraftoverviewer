@@ -36,3 +36,11 @@
     mode: 0644
   notify:
     - Restart minecraftoverviewer service
+
+- name: Create render volume directory
+  file:
+    path: "{{ minecraftoverviewer_render_volume }}"
+    state: directory
+    owner: "1000"
+    group: "1000"
+    mode: 0755
