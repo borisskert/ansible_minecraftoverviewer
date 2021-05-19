@@ -1,1 +1,18 @@
 ---
+- name: Create docker working directory
+  file:
+    path: "{{ minecraftoverviewer_docker_working_directory }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Create docker-compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ minecraftoverviewer_docker_compose_path }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart minecraftoverviewer service

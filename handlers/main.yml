@@ -1,1 +1,11 @@
 ---
+- name: Restart minecraftoverviewer service
+  systemd:
+    name: "{{ minecraftoverviewer_service_name }}"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+  when: not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
+    )

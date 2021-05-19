@@ -1,1 +1,5 @@
 ---
+minecraftoverviewer_service_name: minecraftoverviewer
+
+minecraftoverviewer_docker_working_directory: /opt/minecraft_overviewer/docker
+minecraftoverviewer_docker_compose_path: '{{ minecraftoverviewer_docker_working_directory }}/docker-compose.yml'

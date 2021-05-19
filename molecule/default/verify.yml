@@ -5,6 +5,22 @@
   become: true
 
   tasks:
-    - name: Example assertion
-      assert:
-        that: true
+    - name: Should template docker-compose file
+      slurp:
+        src: /opt/minecraft_overviewer/docker/docker-compose.yml
+      register: docker_compose_file
+      failed_when:
+        not docker_compose_file.content == ( expected_content | b64encode )
+      vars:
+        expected_content: |
+          ---
+          version: "3.9"
+          services:
+            minecraft_overviewer:
+              image: mide/minecraft-overviewer:latest
+              container_name: minecraft-overviewer
+              environment:
+                MINECRAFT_VERSION: "latest"
+              volumes:
+                - /srv/minecraftserver/minecraft-data:/home/minecraft/server/:ro
+                - /srv/minecraft_overviewer/render:/home/minecraft/render/:rw
