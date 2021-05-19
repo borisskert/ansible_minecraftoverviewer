@@ -1,0 +1,37 @@
+[Install]
+WantedBy=multi-user.target
+
+[Unit]
+Description=minecraftoverview service
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStartPre=-/usr/local/bin/docker-compose \
+  --project-directory /opt/minecraftoverview/docker \
+  --file /opt/minecraftoverview/docker/docker-compose.yml \
+  --project-name minecraftoverview \
+  down \
+  --remove-orphans
+
+ExecStartPre=/usr/local/bin/docker-compose \
+  --project-directory /opt/minecraftoverview/docker \
+  --file /opt/minecraftoverview/docker/docker-compose.yml \
+  --project-name minecraftoverview \
+  pull
+
+ExecStart=/usr/local/bin/docker-compose \
+  --project-directory /opt/minecraftoverview/docker \
+  --file /opt/minecraftoverview/docker/docker-compose.yml \
+  --project-name minecraftoverview \
+  up
+
+ExecStop=/usr/local/bin/docker-compose \
+  --project-directory /opt/minecraftoverview/docker \
+  --file /opt/minecraftoverview/docker/docker-compose.yml \
+  --project-name minecraftoverview \
+  down \
+  --remove-orphans
+
+Restart=no
+TimeoutSec=3600

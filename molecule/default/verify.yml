@@ -24,3 +24,49 @@
               volumes:
                 - /srv/minecraftserver/minecraft-data:/home/minecraft/server/:ro
                 - /srv/minecraft_overviewer/render:/home/minecraft/render/:rw
+
+    - name: Should template systemd unit file
+      slurp:
+        src: /etc/systemd/system/minecraftoverviewer.service
+      register: systemd_service_file
+      failed_when:
+        not systemd_service_file.content == ( expected_content | b64encode )
+      vars:
+        expected_content: |
+          [Install]
+          WantedBy=multi-user.target
+
+          [Unit]
+          Description=minecraftoverview service
+          After=docker.service
+          Requires=docker.service
+
+          [Service]
+          ExecStartPre=-/usr/local/bin/docker-compose \
+            --project-directory /opt/minecraftoverview/docker \
+            --file /opt/minecraftoverview/docker/docker-compose.yml \
+            --project-name minecraftoverview \
+            down \
+            --remove-orphans
+
+          ExecStartPre=/usr/local/bin/docker-compose \
+            --project-directory /opt/minecraftoverview/docker \
+            --file /opt/minecraftoverview/docker/docker-compose.yml \
+            --project-name minecraftoverview \
+            pull
+
+          ExecStart=/usr/local/bin/docker-compose \
+            --project-directory /opt/minecraftoverview/docker \
+            --file /opt/minecraftoverview/docker/docker-compose.yml \
+            --project-name minecraftoverview \
+            up
+
+          ExecStop=/usr/local/bin/docker-compose \
+            --project-directory /opt/minecraftoverview/docker \
+            --file /opt/minecraftoverview/docker/docker-compose.yml \
+            --project-name minecraftoverview \
+            down \
+            --remove-orphans
+
+          Restart=no
+          TimeoutSec=3600
