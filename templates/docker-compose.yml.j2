@@ -2,10 +2,10 @@
 version: "3.9"
 services:
   minecraft_overviewer:
-    image: mide/minecraft-overviewer:latest
-    container_name: minecraft-overviewer
+    image: mide/minecraft-overviewer:{{ minecraftoverviewer_image_version }}
+    container_name: {{ minecraftoverviewer_container_name }}
     environment:
-      MINECRAFT_VERSION: "latest"
+      MINECRAFT_VERSION: "{{ minecraftoverviewer_minecraft_version }}"
     volumes:
-      - /srv/minecraftserver/minecraft-data:/home/minecraft/server/:ro
-      - /srv/minecraft_overviewer/render:/home/minecraft/render/:rw
+      - {{ minecraftoverviewer_minecraftserver_volume_directory }}:/home/minecraft/server/:ro
+      - {{ minecraftoverviewer_render_volume_directory }}:/home/minecraft/render/:rw

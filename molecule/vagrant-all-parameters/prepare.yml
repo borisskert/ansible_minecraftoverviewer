@@ -1,0 +1,48 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install docker
+      include_role:
+        name: install-docker
+      vars:
+        docker_storage_driver: overlay2
+        docker_cleanup_enabled: false
+      when: not (
+        molecule_docker_environment is defined
+        and molecule_docker_environment | bool
+        )
+
+    - name: Install docker-compose
+      include_role:
+        name: install-docker-compose
+      vars:
+        docker_compose_version: 1.29.2
+      when: not (
+        molecule_docker_environment is defined
+        and molecule_docker_environment | bool
+        )
+
+    - name: Prepare minecraftserver for the map
+      include_role:
+        name: install-minecraftserver
+      vars:
+        minecraftserver_state: present
+        minecraftserver_image_version: 2021.11.0
+        minecraftserver_version: 1.16.5
+        minecraftserver_data_volume_directory: /srv/my_minecraftserver/minecraft-data
+
+    - name: Wait until 25565/tcp port opened
+      command: nc -z -w1 localhost 25565
+      changed_when: false
+      register: netcat_tcp_25565
+      retries: 300
+      delay: 1
+      until: netcat_tcp_25565 is defined
+        and netcat_tcp_25565.rc == 0
+      when: not (
+        molecule_docker_environment is defined
+        and molecule_docker_environment | bool
+        )

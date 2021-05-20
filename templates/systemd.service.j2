@@ -8,27 +8,27 @@ Requires=docker.service
 
 [Service]
 ExecStartPre=-/usr/local/bin/docker-compose \
-  --project-directory /opt/minecraftoverview/docker \
-  --file /opt/minecraftoverview/docker/docker-compose.yml \
+  --project-directory {{ minecraftoverviewer_docker_working_directory }} \
+  --file {{ minecraftoverviewer_docker_working_directory }}/docker-compose.yml \
   --project-name minecraftoverview \
   down \
   --remove-orphans
 
 ExecStartPre=/usr/local/bin/docker-compose \
-  --project-directory /opt/minecraftoverview/docker \
-  --file /opt/minecraftoverview/docker/docker-compose.yml \
+  --project-directory {{ minecraftoverviewer_docker_working_directory }} \
+  --file {{ minecraftoverviewer_docker_working_directory }}/docker-compose.yml \
   --project-name minecraftoverview \
   pull
 
 ExecStart=/usr/local/bin/docker-compose \
-  --project-directory /opt/minecraftoverview/docker \
-  --file /opt/minecraftoverview/docker/docker-compose.yml \
+  --project-directory {{ minecraftoverviewer_docker_working_directory }} \
+  --file {{ minecraftoverviewer_docker_working_directory }}/docker-compose.yml \
   --project-name minecraftoverview \
   up
 
 ExecStop=/usr/local/bin/docker-compose \
-  --project-directory /opt/minecraftoverview/docker \
-  --file /opt/minecraftoverview/docker/docker-compose.yml \
+  --project-directory {{ minecraftoverviewer_docker_working_directory }} \
+  --file {{ minecraftoverviewer_docker_working_directory }}/docker-compose.yml \
   --project-name minecraftoverview \
   down \
   --remove-orphans

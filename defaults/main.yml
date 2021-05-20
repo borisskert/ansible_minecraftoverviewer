@@ -1,7 +1,14 @@
 ---
-minecraftoverviewer_render_volume: /srv/minecraft_overviewer/render
+minecraftoverviewer_minecraft_version: latest
+minecraftoverviewer_image_version: latest
 
+minecraftoverviewer_render_volume_directory: /srv/minecraftoverviewer/render
+minecraftoverviewer_minecraftserver_volume_directory: /srv/minecraftserver/minecraft-data
+
+minecraftoverviewer_container_name: minecraft-overviewer
 minecraftoverviewer_service_name: minecraftoverviewer
 
-minecraftoverviewer_docker_working_directory: /opt/minecraft_overviewer/docker
+minecraftoverviewer_docker_working_directory: /opt/minecraftoverviewer/docker
 minecraftoverviewer_docker_compose_path: '{{ minecraftoverviewer_docker_working_directory }}/docker-compose.yml'
+
+minecraftoverviewer_on_calender: daily

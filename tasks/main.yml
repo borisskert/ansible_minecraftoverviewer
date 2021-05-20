@@ -39,7 +39,7 @@
 
 - name: Create render volume directory
   file:
-    path: "{{ minecraftoverviewer_render_volume }}"
+    path: "{{ minecraftoverviewer_render_volume_directory }}"
     state: directory
     owner: "1000"
     group: "1000"

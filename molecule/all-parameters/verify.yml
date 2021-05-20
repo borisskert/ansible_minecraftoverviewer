@@ -7,7 +7,7 @@
   tasks:
     - name: Should template docker-compose file
       slurp:
-        src: /opt/minecraftoverviewer/docker/docker-compose.yml
+        src: /opt/my_minecraft_overviewer/docker/docker-compose.yml
       register: docker_compose_file
       failed_when:
         not docker_compose_file.content == ( expected_content | b64encode )
@@ -17,13 +17,13 @@
           version: "3.9"
           services:
             minecraft_overviewer:
-              image: mide/minecraft-overviewer:latest
-              container_name: minecraft-overviewer
+              image: mide/minecraft-overviewer:2020-09
+              container_name: my-minecraft-overviewer
               environment:
-                MINECRAFT_VERSION: "latest"
+                MINECRAFT_VERSION: "1.16.5"
               volumes:
-                - /srv/minecraftserver/minecraft-data:/home/minecraft/server/:ro
-                - /srv/minecraftoverviewer/render:/home/minecraft/render/:rw
+                - /srv/my_minecraftserver/minecraft-data:/home/minecraft/server/:ro
+                - /srv/my_minecraft_overviewer/render:/home/minecraft/render/:rw
 
     - name: Should template systemd unit file
       slurp:
@@ -43,27 +43,27 @@
 
           [Service]
           ExecStartPre=-/usr/local/bin/docker-compose \
-            --project-directory /opt/minecraftoverviewer/docker \
-            --file /opt/minecraftoverviewer/docker/docker-compose.yml \
+            --project-directory /opt/my_minecraft_overviewer/docker \
+            --file /opt/my_minecraft_overviewer/docker/docker-compose.yml \
             --project-name minecraftoverview \
             down \
             --remove-orphans
 
           ExecStartPre=/usr/local/bin/docker-compose \
-            --project-directory /opt/minecraftoverviewer/docker \
-            --file /opt/minecraftoverviewer/docker/docker-compose.yml \
+            --project-directory /opt/my_minecraft_overviewer/docker \
+            --file /opt/my_minecraft_overviewer/docker/docker-compose.yml \
             --project-name minecraftoverview \
             pull
 
           ExecStart=/usr/local/bin/docker-compose \
-            --project-directory /opt/minecraftoverviewer/docker \
-            --file /opt/minecraftoverviewer/docker/docker-compose.yml \
+            --project-directory /opt/my_minecraft_overviewer/docker \
+            --file /opt/my_minecraft_overviewer/docker/docker-compose.yml \
             --project-name minecraftoverview \
             up
 
           ExecStop=/usr/local/bin/docker-compose \
-            --project-directory /opt/minecraftoverviewer/docker \
-            --file /opt/minecraftoverviewer/docker/docker-compose.yml \
+            --project-directory /opt/my_minecraft_overviewer/docker \
+            --file /opt/my_minecraft_overviewer/docker/docker-compose.yml \
             --project-name minecraftoverview \
             down \
             --remove-orphans
@@ -83,7 +83,7 @@
           Description=Run minecraftoverview service
 
           [Timer]
-          OnCalendar=daily
+          OnCalendar=hourly
           Persistent=true
 
           [Install]
@@ -91,7 +91,7 @@
 
     - name: Should create render volume
       stat:
-        path: /srv/minecraftoverviewer/render
+        path: /srv/my_minecraft_overviewer/render
       register: render_volume_directory
       failed_when: not (
         render_volume_directory.stat.exists
