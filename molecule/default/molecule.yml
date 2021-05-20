@@ -11,7 +11,7 @@ driver:
   name: docker
 
 platforms:
-  - name: ansible-mc_overviewer-focal
+  - name: ansible-mcoverviewer-focal
     image: docker.io/borisskert/python3:focal
     pre_build_image: true
     volumes:

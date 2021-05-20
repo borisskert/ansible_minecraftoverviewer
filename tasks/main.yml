@@ -15,7 +15,7 @@
     group: root
     mode: 0644
   notify:
-    - Restart minecraftoverviewer service
+    - Reload minecraftoverviewer service
 
 - name: Create systemd unit file
   template:
@@ -25,7 +25,7 @@
     group: root
     mode: 0644
   notify:
-    - Restart minecraftoverviewer service
+    - Reload minecraftoverviewer service
 
 - name: Create systemd timer file
   template:
@@ -35,7 +35,7 @@
     group: root
     mode: 0644
   notify:
-    - Restart minecraftoverviewer service
+    - Restart minecraftoverviewer timer
 
 - name: Create render volume directory
   file:
@@ -44,3 +44,25 @@
     owner: "1000"
     group: "1000"
     mode: 0755
+
+- name: Start systemd-managed docker containers
+  meta: flush_handlers
+
+- name: Enable systemd service (if not started)
+  service:
+    name: "{{ minecraftoverviewer_service_name }}"
+    enabled: true
+  when: not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
+    )
+
+- name: Enable/start systemd timer (if not started)
+  service:
+    name: "{{ minecraftoverviewer_service_name }}.timer"
+    enabled: true
+    state: started
+  when: not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
+    )
