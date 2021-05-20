@@ -1,0 +1,33 @@
+---
+- name: Check state of systemd unit file
+  stat:
+    path: "/etc/systemd/system/{{ minecraftoverviewer_service_name }}.timer"
+  register: minecraftoverviewer_systemd_timer_file_stat
+
+- name: Disable/stop systemd timer service (if not stopped)
+  service:
+    name: "{{ minecraftoverviewer_service_name }}"
+    enabled: false
+    state: stopped
+  when: minecraftoverviewer_systemd_timer_file_stat.stat.exists
+    and not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
+    )
+
+- name: Delete docker working directory
+  file:
+    path: "{{ minecraftoverviewer_docker_working_directory }}"
+    state: absent
+
+- name: Delete systemd unit file
+  file:
+    path: "/etc/systemd/system/{{ minecraftoverviewer_service_name }}.service"
+    state: absent
+  notify: Reload systemd
+
+- name: Delete systemd timer file
+  file:
+    path: "/etc/systemd/system/{{ minecraftoverviewer_service_name }}.timer"
+    state: absent
+  notify: Reload systemd

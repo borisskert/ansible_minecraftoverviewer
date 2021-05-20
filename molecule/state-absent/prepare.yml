@@ -1,0 +1,33 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install docker
+      include_role:
+        name: install-docker
+      vars:
+        docker_storage_driver: overlay2
+        docker_cleanup_enabled: false
+      when: not (
+        molecule_docker_environment is defined
+        and molecule_docker_environment | bool
+        )
+
+    - name: Install docker-compose
+      include_role:
+        name: install-docker-compose
+      vars:
+        docker_compose_version: 1.29.2
+      when: not (
+        molecule_docker_environment is defined
+        and molecule_docker_environment | bool
+        )
+
+    - name: Prepare minecraftserver for the removal
+      include_role:
+        name: ansible_minecraftoverviewer
+      vars:
+        minecraftoverviewer_minecraft_version: 1.16.5
+        minecraftoverviewer_image_version: 2020-09

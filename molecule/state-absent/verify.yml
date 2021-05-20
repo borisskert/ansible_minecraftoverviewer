@@ -1,0 +1,35 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Should remove docker-compose file
+      stat:
+        path: /opt/minecraftoverviewer/docker/docker-compose.yml
+      register: docker_compose_file
+      failed_when: docker_compose_file.stat.exists
+
+    - name: Should remove systemd unit file
+      stat:
+        path: /etc/systemd/system/minecraftoverviewer.service
+      register: systemd_service_file
+      failed_when: systemd_service_file.stat.exists
+
+    - name: Should remove systemd timer file
+      stat:
+        path: /etc/systemd/system/minecraftoverviewer.timer
+      register: systemd_timer_file
+      failed_when: systemd_timer_file.stat.exists
+
+    - name: Should keep render volume
+      stat:
+        path: /srv/minecraftoverviewer/render
+      register: render_volume_directory
+      failed_when: not (
+        render_volume_directory.stat.exists
+        and render_volume_directory.stat.uid == 1000
+        and render_volume_directory.stat.gid == 1000
+        and render_volume_directory.stat.mode == '0755'
+        )

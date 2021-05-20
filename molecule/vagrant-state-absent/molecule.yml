@@ -1,0 +1,28 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: ./molecule/all-parameters/requirements.yml
+
+driver:
+  name: vagrant
+  provider:
+    name: libvirt
+
+platforms:
+  - name: ansible-mcoverviewer-focal
+    box: generic/ubuntu2004
+
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: ../state-absent/prepare.yml
+    converge: ../state-absent/converge.yml
+    verify: ../state-absent/verify.yml
+  inventory:
+    group_vars:
+      debian:
+        ansible_python_interpreter: /usr/bin/python3
+
+verifier:
+  name: ansible
