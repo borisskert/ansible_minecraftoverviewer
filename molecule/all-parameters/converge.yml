@@ -8,10 +8,11 @@
       include_role:
         name: "ansible_minecraftoverviewer"
       vars:
-        minecraftoverviewer_render_volume_directory: /srv/my_minecraft_overviewer/render
-        minecraftoverviewer_minecraftserver_volume_directory: /srv/my_minecraftserver/minecraft-data
+        minecraftoverviewer_state: present
         minecraftoverviewer_minecraft_version: 1.16.5
         minecraftoverviewer_image_version: 2020-09
+        minecraftoverviewer_render_volume_directory: /srv/my_minecraft_overviewer/render
+        minecraftoverviewer_minecraftserver_volume_directory: /srv/my_minecraftserver/minecraft-data
         minecraftoverviewer_container_name: my-minecraft-overviewer
         minecraftoverviewer_docker_working_directory: /opt/my_minecraft_overviewer/docker
         minecraftoverviewer_on_calender: hourly

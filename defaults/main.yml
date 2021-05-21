@@ -1,4 +1,6 @@
 ---
+minecraftoverviewer_state: present
+
 minecraftoverviewer_minecraft_version: latest
 minecraftoverviewer_image_version: latest
 
