@@ -1,12 +1,12 @@
 ---
 - name: Install minecraftoverviewer
-  include: install.yml
+  include_tasks: install.yml
   when: >
     minecraftoverviewer_state is not defined
     or minecraftoverviewer_state == 'present'
 
 - name: Remove minecraftoverviewer
-  include: remove.yml
+  include_tasks: remove.yml
   when: >
     minecraftoverviewer_state is defined
     and minecraftoverviewer_state == 'absent'

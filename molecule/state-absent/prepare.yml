@@ -15,16 +15,6 @@
         and molecule_docker_environment | bool
         )
 
-    - name: Install docker-compose
-      include_role:
-        name: install-docker-compose
-      vars:
-        docker_compose_version: 1.29.2
-      when: not (
-        molecule_docker_environment is defined
-        and molecule_docker_environment | bool
-        )
-
     - name: Prepare minecraftserver for the removal
       include_role:
         name: ansible_minecraftoverviewer

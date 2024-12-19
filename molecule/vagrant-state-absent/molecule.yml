@@ -3,6 +3,7 @@ dependency:
   name: galaxy
   options:
     role-file: ./molecule/all-parameters/requirements.yml
+    force: true
 
 driver:
   name: vagrant
@@ -10,8 +11,20 @@ driver:
     name: libvirt
 
 platforms:
+  - name: ansible-mcoverviewer-noble
+    box: cloud-image/ubuntu-24.04
+  - name: ansible-mcoverviewer-jammy
+    box: cloud-image/ubuntu-22.04
   - name: ansible-mcoverviewer-focal
-    box: generic/ubuntu2004
+    box: cloud-image/ubuntu-20.04
+  - name: ansible-mcoverviewer-bookworm
+    box: cloud-image/debian-12
+    groups:
+      - debian
+  - name: ansible-mcoverviewer-bullseye
+    box: cloud-image/debian-11
+    groups:
+      - debian
 
 provisioner:
   name: ansible
