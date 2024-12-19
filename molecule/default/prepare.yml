@@ -3,6 +3,14 @@
   hosts: all
   become: true
 
+  pre_tasks:
+    - name: Install netcat on Debian-based systems (to test open ports)
+      package:
+        name: netcat-traditional
+        state: present
+        update_cache: true
+      when: ansible_distribution == 'Debian'
+
   tasks:
     - name: Install docker
       include_role:
@@ -10,16 +18,6 @@
       vars:
         docker_storage_driver: overlay2
         docker_cleanup_enabled: false
-      when: not (
-        molecule_docker_environment is defined
-        and molecule_docker_environment | bool
-        )
-
-    - name: Install docker-compose
-      include_role:
-        name: install-docker-compose
-      vars:
-        docker_compose_version: 1.29.2
       when: not (
         molecule_docker_environment is defined
         and molecule_docker_environment | bool
@@ -39,8 +37,11 @@
       register: netcat_tcp_25565
       retries: 300
       delay: 1
-      until: netcat_tcp_25565 is defined
-        and netcat_tcp_25565.rc == 0
+      until: netcat_tcp_25565 is defined and (
+        netcat_tcp_25565.rc == 0
+        or netcat_tcp_25565.rc == 2) # nc command not found
+      failed_when: netcat_tcp_25565 is defined
+        and netcat_tcp_25565.rc != 0
       when: not (
         molecule_docker_environment is defined
         and molecule_docker_environment | bool

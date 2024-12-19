@@ -2,13 +2,9 @@
 - name: install-docker
   src: https://github.com/borisskert/ansible-docker.git
   scm: git
-  version: v20.07.24
-
-- name: install-docker-compose
-  src: https://github.com/borisskert/ansible-docker-compose.git
-  scm: git
-  version: v20.12.15
+  version: v24.12.11
 
 - name: install-minecraftserver
   src: https://github.com/borisskert/ansible_minecraftserver.git
   scm: git
+  version: v24.12.19
