@@ -28,7 +28,7 @@
         name: install-minecraftserver
       vars:
         minecraftserver_state: present
-        minecraftserver_image_version: 2021.11.0
+        minecraftserver_image_version: 2024.12.0
         minecraftserver_version: latest
 
     - name: Wait until 25565/tcp port opened
