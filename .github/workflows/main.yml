@@ -1,0 +1,34 @@
+---
+name: Run tests
+
+'on':
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  molecule_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          path: "${{ github.repository }}"
+
+      - name: Run default tests
+        uses: borisskert/molecule-action@v24.12.9
+        with:
+          arguments: test
+
+      - name: Run tests 'all-parameters'
+        uses: borisskert/molecule-action@v24.12.9
+        with:
+          arguments: test --scenario-name all-parameters
+
+      - name: Run tests 'state-absent'
+        uses: borisskert/molecule-action@v24.12.9
+        with:
+          arguments: test --scenario-name state-absent
