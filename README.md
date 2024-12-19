@@ -7,7 +7,6 @@ I'm using [mide's docker image](https://github.com/mide/minecraft-overviewer). T
 ## System requirements
 
 * Docker
-* docker-compose
 * Systemd
 
 ## Tasks
@@ -19,16 +18,16 @@ I'm using [mide's docker image](https://github.com/mide/minecraft-overviewer). T
 
 ## Role parameters
 
-| Variable      | Type | Mandatory? | Default | Description           |
-|---------------|------|------------|---------|-----------------------|
-| minecraftoverviewer_state | text | no | `'present'` | If `absent` removes the docker configuration, systemd service and timer |
-| minecraftoverviewer_minecraft_version | version number | no | `'latest'` | Your minecraft server version |
-| minecraftoverviewer_image_version     | docker image tag | no | `'latest'` | Used [mide's](https://hub.docker.com/r/mide/minecraft-overviewer) docker image version |
-| minecraftoverviewer_render_volume_directory | absolute path | no | `/srv/minecraftoverviewer/render` | Location of your render data directory (will be created if not present) |
-| minecraftoverviewer_minecraftserver_volume_directory | absolute path | no | `/srv/minecraftserver/minecraft-data` | Location of your minecraft server data directory (minecraft overviewer will fail if not present) |
-| minecraftoverviewer_on_calender                      | systemd timer `OnCalendar` | no | `daily` | Specifies how often (or when exactly) your timer will run the minecraft overviewer |
-| minecraftoverviewer_container_name                   | docker container name | no | `minecraft-overviewer` | Specifies how the name of your docker container |
-| minecraftoverviewer_docker_working_directory         | absolute path | no | `/opt/minecraft_overviewer/docker` | Directory where your docker-compose file will be placed |
+| Variable                                             | Type                       | Mandatory? | Default                               | Description                                                                                      |
+|------------------------------------------------------|----------------------------|------------|---------------------------------------|--------------------------------------------------------------------------------------------------|
+| minecraftoverviewer_state                            | text                       | no         | `'present'`                           | If `absent` removes the docker configuration, systemd service and timer                          |
+| minecraftoverviewer_minecraft_version                | version number             | no         | `'latest'`                            | Your minecraft server version                                                                    |
+| minecraftoverviewer_image_version                    | docker image tag           | no         | `'latest'`                            | Used [mide's](https://hub.docker.com/r/mide/minecraft-overviewer) docker image version           |
+| minecraftoverviewer_render_volume_directory          | absolute path              | no         | `/srv/minecraftoverviewer/render`     | Location of your render data directory (will be created if not present)                          |
+| minecraftoverviewer_minecraftserver_volume_directory | absolute path              | no         | `/srv/minecraftserver/minecraft-data` | Location of your minecraft server data directory (minecraft overviewer will fail if not present) |
+| minecraftoverviewer_on_calender                      | systemd timer `OnCalendar` | no         | `daily`                               | Specifies how often (or when exactly) your timer will run the minecraft overviewer               |
+| minecraftoverviewer_container_name                   | docker container name      | no         | `minecraft-overviewer`                | Specifies how the name of your docker container                                                  |
+| minecraftoverviewer_docker_working_directory         | absolute path              | no         | `/opt/minecraft_overviewer/docker`    | Directory where your docker-compose file will be placed                                          |
 
 ## Example playbook
 
